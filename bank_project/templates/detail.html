@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            padding-right: 20px;
+            background: url('https://cdn1.iconfinder.com/data/icons/feather-2/24/chevron-down-16.png') no-repeat right;
+            background-size: 16px 16px;
+        }
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+        .submit-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        #message {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#id_district").change(function() {
+                var districtId = $(this).val();
+                $.ajax({
+                    url: "{% url 'bankingapp:get_sub_districts' %}",
+                    data: {
+                        'district_id': districtId
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $("#id_sub_district").empty();
+                        $.each(data.sub_districts, function(key, value) {
+                            $("#id_sub_district").append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1>User Data Form</h1>
+    <form method="post" action="{% url 'bankingapp:final_page' %}">
+        {% csrf_token %}
+        <label for="{{ form.name.id_for_label }}">Name:</label>
+        {{ form.name }}
+        <br>
+
+        <label for="{{ form.dob.id_for_label }}">Date of Birth:</label>
+        {{ form.dob }}
+        <br>
+
+        <label for="{{ form.gender.id_for_label }}">Gender:</label>
+        {{ form.gender }}
+        <br>
+
+        <label for="{{ form.phone_number.id_for_label }}">Phone Number:</label>
+        {{ form.phone_number }}
+        <br>
+
+        <label for="{{ form.email.id_for_label }}">Email:</label>
+        {{ form.email }}
+        <br>
+
+        <label for="{{ form.address.id_for_label }}">Address:</label>
+        {{ form.address }}
+        <br>
+
+        <label for="{{ form.district.id_for_label }}">District:</label>
+        {{ form.district }}
+        <br>
+
+        <label for="{{ form.sub_district.id_for_label }}">Sub District:</label>
+        {{ form.sub_district }}
+        <br>
+
+        <label for="{{ form.account_type.id_for_label }}">Account Type:</label>
+        {{ form.account_type }}
+        <br>
+
+        <label>Materials Provided:</label>
+        {% for material in form.materials_provided %}
+            <div>
+                <input type="checkbox" id="{{ material.id_for_label }}" name="{{ material.name }}" value="{{ material.choice_value }}">
+                <label for="{{ material.id_for_label }}">{{ material.choice_label }}</label>
+            </div>
+        {% endfor %}
+        <br>
+
+        <button type="submit">Submit</button>
+
+<button type="submit">
+    <a href="{% url 'bankapp:home' %}">
+        Logout</a>
+    </button>
+        </form>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>User Form</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            background-color: #f4f4f4;-->
+<!--        }-->
+<!--        .container {-->
+<!--            max-width: 1500px;-->
+<!--            margin: 0 auto;-->
+<!--            padding: 20px;-->
+<!--            background-color: #fff;-->
+<!--            border-radius: 5px;-->
+<!--            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+<!--        label {-->
+<!--            display: block;-->
+<!--            font-weight: bold;-->
+<!--            margin-bottom: 5px;-->
+<!--        }-->
+<!--        input[type="text"],-->
+<!--        input[type="date"],-->
+<!--        input[type="number"],-->
+<!--        input[type="email"],-->
+<!--        select {-->
+<!--            width: 100%;-->
+<!--            padding: 10px;-->
+<!--            margin-bottom: 15px;-->
+<!--            border: 1px solid #ccc;-->
+<!--            border-radius: 3px;-->
+<!--        }-->
+<!--        select {-->
+<!--            appearance: none;-->
+<!--            -webkit-appearance: none;-->
+<!--            padding-right: 20px;-->
+<!--            background: url('https://cdn1.iconfinder.com/data/icons/feather-2/24/chevron-down-16.png') no-repeat right;-->
+<!--            background-size: 16px 16px;-->
+<!--        }-->
+<!--        input[type="radio"] {-->
+<!--            margin-right: 5px;-->
+<!--        }-->
+<!--        .submit-btn {-->
+<!--            background-color: #007bff;-->
+<!--            color: #fff;-->
+<!--            border: none;-->
+<!--            padding: 10px 20px;-->
+<!--            border-radius: 3px;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--        #message {-->
+<!--            margin-top: 10px;-->
+<!--            font-weight: bold;-->
+<!--        }-->
+<!--    </style>-->
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--    <script>-->
+<!--        $(document).ready(function() {-->
+<!--            $("#id_district").change(function() {-->
+<!--                var districtId = $(this).val();-->
+<!--                $.ajax({-->
+<!--                    url: "{% url 'bankingapp:get_sub_districts' %}",-->
+<!--                    data: {-->
+<!--                        'district_id': districtId-->
+<!--                    },-->
+<!--                    dataType: 'json',-->
+<!--                    success: function(data) {-->
+<!--                        $("#id_sub_district").empty();-->
+<!--                        $.each(data.sub_districts, function(key, value) {-->
+<!--                            $("#id_sub_district").append('<option value="' + value.id + '">' + value.name + '</option>');-->
+<!--                        });-->
+<!--                    }-->
+<!--                });-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <div class="container">-->
+<!--        <h1>Fill in the Form</h1>-->
+<!--        <form id="PersonForm" method="post"></form>-->
+
+<!--        {% csrf_token %}-->
+<!--        <label for="id_name">Name:</label>-->
+<!--        {{ form.name }}-->
+<!--        <br>-->
+<!--        <label for="id_dob">Date of Birth:</label>-->
+<!--        {{ form.dob }}-->
+<!--        <br>-->
+<!--        <label for="id_district">District:</label>-->
+<!--        {{ form.district }}-->
+<!--        <br>-->
+<!--        <label for="id_sub_district">Sub District:</label>-->
+<!--        {{ form.sub_district }}-->
+<!--        <br>-->
+<!--        <label for="id_age">Age:</label>-->
+<!--        {{ form.age }}-->
+<!--        <br>-->
+<!--        <label>Gender:</label>-->
+<!--        {% for gender in form.gender %}-->
+<!--            {{ gender }}-->
+<!--        {% endfor %}-->
+<!--        <br>-->
+<!--        <label for="id_phone_number">Phone Number:</label>-->
+<!--        {{ form.phone_number }}-->
+<!--        <br>-->
+<!--        <label for="id_mail_id">Mail ID:</label>-->
+<!--        {{ form.mail_id }}-->
+<!--        <br>-->
+<!--        <label for="id_address">Address:</label>-->
+<!--        {{ form.address }}-->
+<!--        <br>-->
+<!--        <label for="id_account_type">Account Type:</label>-->
+<!--        {{ form.account_type }}-->
+<!--        <br>-->
+<!--        <label>Materials Provided:</label>-->
+<!--        {% for material in form.materials_provided %}-->
+<!--            {{ material }}-->
+<!--        {% endfor %}-->
+<!--        <br>-->
+<!--        <input type="submit" value="Submit">-->
+<!--       </form>-->
+<!--        </div>-->
+<!--       {% if messages %}-->
+<!--            {% for message in messages %}-->
+<!--                <strong>{{message}}</strong>-->
+<!-- {% endfor %}-->
+<!--{% endif %}-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
